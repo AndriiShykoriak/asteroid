@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Asteroid</title>
+    <script language="JavaScript" type="text/javascript" src="src/ship.js"></script>
+    <script language="JavaScript" type="text/javascript" src="src/asteroid.js"></script>
+    <script language="JavaScript" type="text/javascript" src="src/laser.js"></script>
+    <script language="JavaScript" type="text/javascript" src="src/space.js"></script>
+    <style> body {padding: 0; margin: 0;} </style>
+</head>
+<body>
+<canvas id="canvas" width="700" height="500"></canvas>
+
+<script>
+    let canvas = document.getElementById("canvas");
+    let ctx = canvas.getContext("2d");
+    let ship = newShip();
+    let roidss = [];
+    setInterval(update, 1000/30);
+    createAsteroidBelt();
+    shootLaser();
+    function update() {
+        //space
+        a();
+        //ship
+        thrustShip();
+        drawShip();
+        edgeShip();
+
+        //asteroid
+        drawAsteroid();
+        moveAsteroid();
+        collision();
+        //laser
+        drawLaser();
+        moveToLasers();
+        hits();
+    }
+
+    //button
+    document.addEventListener("keydown", onkeydown);
+    document.addEventListener("keyup", onkeyup);
+    function onkeydown(/** @type {KeyboardEvent}*/ev) {
+        switch (ev.keyCode) {
+            case 32://space laser
+                shootLaser();
+                break;
+            case 37://left
+                ship.rot = 360/180 * Math.PI/30;
+                break;
+            case 38://up
+                ship.thrusting = true;
+                break;
+            case 39://right
+                ship.rot = -360/180 * Math.PI/30;
+                break;
+        }
+    }
+
+    function onkeyup(/** @type {KeyboardEvent}*/ev) {
+        switch (ev.keyCode) {
+            case 32://space laser
+                ship.canShoot = true;
+                break;
+            case 37://left stop
+                ship.rot = 0;
+                break;
+            case 38:
+                ship.thrusting = false;
+                break;
+            case 39://right stop
+                ship.rot = 0;
+                break;
+        }
+    }
+
+</script>
+</body>
+</html>
